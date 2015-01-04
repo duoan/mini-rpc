@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Built-By: anduo
+Build-Jdk: 1.7.0_51
+Created-By: Maven Integration for Eclipse
+
