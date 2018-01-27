@@ -1,17 +1,22 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>xyz.anduo</groupId>
+    <groupId>me.anduo</groupId>
     <artifactId>rpc</artifactId>
     <packaging>pom</packaging>
     <version>0.0.1-SNAPSHOT</version>
     <modules>
-        <module>rpc_client</module>
-        <module>rpc_sieve</module>
-        <module>rpc_common</module>
-        <module>rpc_simple</module>
+        <module>rpc-client</module>
+        <module>rpc-server</module>
+        <module>rpc-common</module>
+        <module>rpc-example</module>
     </modules>
-    <name>rpc</name>
+    <properties>
+        <spring.version>3.2.12.RELEASE</spring.version>
+        <netty.version>4.0.24.Final</netty.version>
+        <protostuff.version>1.0.8</protostuff.version>
+    </properties>
+    <name>scratch-rpc</name>
 
     <dependencyManagement>
         <dependencies>
@@ -34,12 +39,12 @@
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-context</artifactId>
-                <version>3.2.12.RELEASE</version>
+                <version>${spring.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-test</artifactId>
-                <version>3.2.12.RELEASE</version>
+                <version>${spring.version}</version>
                 <scope>test</scope>
             </dependency>
 
@@ -47,19 +52,19 @@
             <dependency>
                 <groupId>io.netty</groupId>
                 <artifactId>netty-all</artifactId>
-                <version>4.0.24.Final</version>
+                <version>${netty.version}</version>
             </dependency>
 
             <!-- Protostuff -->
             <dependency>
                 <groupId>com.dyuproject.protostuff</groupId>
                 <artifactId>protostuff-core</artifactId>
-                <version>1.0.8</version>
+                <version>${protostuff.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.dyuproject.protostuff</groupId>
                 <artifactId>protostuff-runtime</artifactId>
-                <version>1.0.8</version>
+                <version>${protostuff.version}</version>
             </dependency>
 
             <!-- ZooKeeper -->
@@ -95,5 +100,13 @@
 
     <build>
         <finalName>rpc</finalName>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <compilerVersion>1.8</compilerVersion>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 </project>
