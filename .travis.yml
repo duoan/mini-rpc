@@ -1,0 +1,10 @@
+language: java
+jdk:
+  - oraclejdk8
+  - oraclejdk9
+  - openjdk8
+
+install:
+  - wget https://mirrors.tuna.tsinghua.edu.cn/apache/zookeeper/zookeeper-3.4.11/zookeeper-3.4.11.tar.gz
+  - tar -xzvf zookeeper-3.4.11.tar.gz
+  - pushd zookeeper-3.4.11 && cp conf/zoo_sample.cfg conf/zoo.cfg && bin/zkServer.sh start
