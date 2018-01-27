@@ -9,7 +9,7 @@
         <module>rpc-client</module>
         <module>rpc-server</module>
         <module>rpc-common</module>
-        <module>rpc-example</module>
+        <module>rpc-test</module>
     </modules>
     <properties>
         <spring.version>3.2.12.RELEASE</spring.version>
