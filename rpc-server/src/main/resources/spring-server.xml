@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+	<context:component-scan base-package="xyz.anduo.rpc" />
+	<context:property-placeholder location="classpath:server-config.properties"/>
+	<!-- 配置服务注册组件 -->
+    <bean id="serviceRegistry" class="me.anduo.rpc.server.core.ServiceRegistry">
+        <constructor-arg name="registryAddress" value="${registry.address}"/>
+    </bean>
+ 
+    <!-- 配置 RPC 服务器 -->
+    <bean id="xyz.anduo.rpc.serverServer" class="me.anduo.rpc.server.core.RpcServer">
+        <constructor-arg name="serverAddress" value="${server.address}"/>
+        <constructor-arg name="serviceRegistry" ref="serviceRegistry"/>
+    </bean>
+</beans>
