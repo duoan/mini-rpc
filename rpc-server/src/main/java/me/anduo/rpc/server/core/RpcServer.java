@@ -8,10 +8,9 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-
-import java.util.HashMap;
-import java.util.Map;
-
+import me.anduo.rpc.client.RpcRequest;
+import me.anduo.rpc.client.RpcResponse;
+import me.anduo.rpc.common.RpcDecoder;
 import org.apache.commons.collections4.MapUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,9 +19,8 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
-import me.anduo.rpc.client.RpcRequest;
-import me.anduo.rpc.client.RpcResponse;
-import me.anduo.rpc.common.RpcDecoder;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * RPC服务实例。
@@ -59,17 +57,22 @@ public class RpcServer implements ApplicationContextAware, InitializingBean {
             for (Object serviceBean : serviceBeanMap.values()) {
                 String interfaceName = serviceBean.getClass().getAnnotation(RpcService.class).value().getName();
                 handlerMap.put(interfaceName, serviceBean);
+                LOGGER.info("Found service handler {}", interfaceName);
             }
         }
     }
 
+    private EventLoopGroup bossGroup;
+    private EventLoopGroup workerGroup;
+
     @Override
     public void afterPropertiesSet() throws Exception {
-        EventLoopGroup bossGroup = new NioEventLoopGroup();
-        EventLoopGroup workerGroup = new NioEventLoopGroup();
+        this.bossGroup = new NioEventLoopGroup();
+        this.workerGroup = new NioEventLoopGroup();
         try {
             ServerBootstrap bootstrap = new ServerBootstrap();
-            bootstrap.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class)
+            bootstrap.group(bossGroup, workerGroup)
+                    .channel(NioServerSocketChannel.class)
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         public void initChannel(SocketChannel channel) {
@@ -81,7 +84,9 @@ public class RpcServer implements ApplicationContextAware, InitializingBean {
                                     /** 处理RPC请求*/
                                     .addLast(new RpcHandler(handlerMap));
                         }
-                    }).option(ChannelOption.SO_BACKLOG, 128).childOption(ChannelOption.SO_KEEPALIVE, true);
+                    })
+                    .option(ChannelOption.SO_BACKLOG, 128)
+                    .childOption(ChannelOption.SO_KEEPALIVE, true);
 
             String[] array = serverAddress.split(":");
             String host = array[0];
@@ -90,13 +95,23 @@ public class RpcServer implements ApplicationContextAware, InitializingBean {
             ChannelFuture future = bootstrap.bind(host, port).sync();
             LOGGER.debug("server started on port {}", port);
 
+            // 注册服务地址
             if (serviceRegistry != null) {
-                serviceRegistry.register(serverAddress); // 注册服务地址
+                serviceRegistry.register(serverAddress);
             }
-
             future.channel().closeFuture().sync();
         } finally {
             workerGroup.shutdownGracefully();
+            bossGroup.shutdownGracefully();
+        }
+
+    }
+
+    public void shutdown() {
+        if (workerGroup != null) {
+            workerGroup.shutdownGracefully();
+        }
+        if (bossGroup != null) {
             bossGroup.shutdownGracefully();
         }
     }

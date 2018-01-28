@@ -16,6 +16,9 @@ import org.slf4j.LoggerFactory;
 import me.anduo.rpc.common.Constant;
 
 
+/**
+ * @author duoan
+ */
 public class ServiceDiscovery {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ServiceDiscovery.class);
 

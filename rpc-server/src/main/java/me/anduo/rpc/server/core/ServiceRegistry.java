@@ -61,11 +61,15 @@ public class ServiceRegistry {
 
     private void createNode(ZooKeeper zk, String data) {
         try {
+            LOGGER.debug("查看根节点的子节点:ls / => " + zk.getChildren("/", true));
+            if(zk.exists(Constant.ZK_REGISTRY_PATH,true)==null){
+                zk.create(Constant.ZK_REGISTRY_PATH,"service_registry_path".getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
+            }
             byte[] bytes = data.getBytes();
             String path = zk.create(Constant.ZK_DATA_PATH, bytes, ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL_SEQUENTIAL);
             LOGGER.debug("create zookeeper node ({} => {})", path, data);
         } catch (KeeperException | InterruptedException e) {
-            LOGGER.error("", e);
+            LOGGER.error("Create Node error.", e);
         }
     }
 }
