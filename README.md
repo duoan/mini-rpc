@@ -1,4 +1,4 @@
-Scratch RPC
+A Open RPC Implement with Java.
 ===========
 ![https://travis-ci.org/classtag/OpenRpc](https://img.shields.io/travis/classtag/OpenRpc.svg)
 
