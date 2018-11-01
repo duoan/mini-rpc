@@ -1,7 +1,7 @@
-package me.anduo.rpc.server.modules.simple.impl;
+package me.anduo.rpc.server.modules.sample.impl;
 
 import me.anduo.rpc.server.core.RpcService;
-import me.anduo.rpc.server.modules.simple.HelloService;
+import me.anduo.rpc.server.modules.sample.HelloService;
 
 // 指定远程接口
 @RpcService(HelloService.class)

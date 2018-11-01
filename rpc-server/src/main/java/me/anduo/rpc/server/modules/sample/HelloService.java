@@ -1,4 +1,4 @@
-package me.anduo.rpc.server.modules.simple;
+package me.anduo.rpc.server.modules.sample;
 
 public interface HelloService {
 
