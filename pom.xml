@@ -13,7 +13,7 @@
     </modules>
     <properties>
         <spring.version>3.2.12.RELEASE</spring.version>
-        <netty.version>4.0.24.Final</netty.version>
+        <netty.version>4.1.42.Final</netty.version>
         <protostuff.version>1.0.8</protostuff.version>
     </properties>
     <name>scratch-rpc</name>
