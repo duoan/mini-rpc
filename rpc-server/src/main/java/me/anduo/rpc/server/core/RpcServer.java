@@ -12,6 +12,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import java.util.HashMap;
 import java.util.Map;
 
+import me.anduo.rpc.common.RpcEncoder;
 import org.apache.commons.collections4.MapUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -77,7 +78,7 @@ public class RpcServer implements ApplicationContextAware, InitializingBean {
                                     /** 将RPC请求进行解码（为了处理请求）*/
                                     new RpcDecoder(RpcRequest.class))
                                     /** 将RPC响应进行编码（为了返回响应）*/
-                                    .addLast(new RpcDecoder(RpcResponse.class))
+                                    .addLast(new RpcEncoder(RpcResponse.class))
                                     /** 处理RPC请求*/
                                     .addLast(new RpcHandler(handlerMap));
                         }

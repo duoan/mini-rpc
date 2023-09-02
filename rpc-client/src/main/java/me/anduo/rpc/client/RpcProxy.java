@@ -36,7 +36,7 @@ public class RpcProxy {
 
                     RpcClient client = new RpcClient(host, port); // 初始化 RPC 客户端
                     RpcResponse response = client.send(request); // 通过 RPC客户端发送RPC请求并获取RPC响应
-                    if (response.isError()) {
+                    if (!response.isError()) {
                         throw response.getError();
                     } else {
                         return response.getResult();
